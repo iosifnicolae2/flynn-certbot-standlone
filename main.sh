@@ -58,18 +58,8 @@ echo "Setup acme-challange path route"
 echo "done"
 
 echo "Generating certificate..."
-echo "certbot certonly \
-        --standalone \
-        --work-dir $CERTBOT_WORK_DIR \
-        --config-dir $CERTBOT_CONFIG_DIR \
-        --logs-dir $CERTBOT_WORK_DIR/logs \
-        --agree-tos \
-        --no-eff-email \
-        --email $LETS_ENCRYPT_EMAIL \
-        --preferred-challenges http \
-        -d $DOMAIN"
-
 certbot certonly \
+  --standalone \
   --work-dir "$CERTBOT_WORK_DIR" \
   --config-dir "$CERTBOT_CONFIG_DIR" \
   --logs-dir "$CERTBOT_WORK_DIR/logs" \
@@ -77,6 +67,7 @@ certbot certonly \
   --no-eff-email \
   --email $LETS_ENCRYPT_EMAIL \
   --preferred-challenges http \
+  --http-01-port  80 \
   -d "$DOMAIN"
 
 echo "Updating certificates via Flynn routes... '$DOMAIN' for app '$APP_NAME'..."
