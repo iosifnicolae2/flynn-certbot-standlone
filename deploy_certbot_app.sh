@@ -23,12 +23,8 @@ FLYNN_TLS_PIN=$(openssl s_client -connect "controller.$FLYNN_CLUSTER_HOST:443" \
   | openssl dgst -binary -sha256 \
   | openssl base64)
 
-flynn env set LETS_ENCRYPT_EMAIL="$LETS_ENCRYPT_EMAIL"
-flynn env set DOMAIN="$DOMAIN"
-flynn env set APP_NAME="$APP_NAME"
-flynn env set FLYNN_CLUSTER_HOST="$FLYNN_CLUSTER_HOST"
-flynn env set FLYNN_CONTROLLER_KEY="$FLYNN_CONTROLLER_KEY"
-flynn env set FLYNN_TLS_PIN="$FLYNN_TLS_PIN"
+flynn env set LETS_ENCRYPT_EMAIL="$LETS_ENCRYPT_EMAIL" DOMAIN="$DOMAIN" APP_NAME="$APP_NAME" \
+    FLYNN_CLUSTER_HOST="$FLYNN_CLUSTER_HOST" FLYNN_CONTROLLER_KEY="$FLYNN_CONTROLLER_KEY" FLYNN_TLS_PIN="$FLYNN_TLS_PIN"
 
 echo "Deploying certbot.."
 git push flynn master
