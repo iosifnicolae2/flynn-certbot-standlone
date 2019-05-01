@@ -1,0 +1,1 @@
+clock: ./main.sh
