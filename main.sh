@@ -46,7 +46,7 @@ APP_NAME="${APP_NAME}"
 DOMAIN="${DOMAIN}"
 
 echo "Extracting route id.."
-ROUTE_ID=$("$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "$APP_NAME" route | grep "$DOMAIN" | awk '{print $3}')
+ROUTE_ID=$("$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "certbot-$APP_NAME" route | grep "$DOMAIN" | awk '{print $3}')
 
 if [[ -z "$ROUTE_ID" ]]; then
     echo "Cannot determine route id: $ROUTE_ID"
@@ -67,7 +67,7 @@ certbot certonly \
   --no-eff-email \
   --email $LETS_ENCRYPT_EMAIL \
   --preferred-challenges http \
-  --http-01-port  80 \
+  --http-01-port  8080 \
   -d "$DOMAIN"
 
 echo "Updating certificates via Flynn routes... '$DOMAIN' for app '$APP_NAME'..."
