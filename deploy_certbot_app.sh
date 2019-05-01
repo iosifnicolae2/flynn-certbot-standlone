@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+echo "Type your email: (eg: john@example.com)"
+read LETS_ENCRYPT_EMAIL
+
 echo "Type the domain name (eg: example.your-domain.com)"
 read DOMAIN
 
@@ -20,6 +23,7 @@ FLYNN_TLS_PIN=$(openssl s_client -connect "controller.$FLYNN_CLUSTER_HOST:443" \
   | openssl dgst -binary -sha256 \
   | openssl base64)
 
+flynn env set LETS_ENCRYPT_EMAIL="$LETS_ENCRYPT_EMAIL"
 flynn env set DOMAIN="$DOMAIN"
 flynn env set APP_NAME="$APP_NAME"
 flynn env set FLYNN_CLUSTER_HOST="$FLYNN_CLUSTER_HOST"
