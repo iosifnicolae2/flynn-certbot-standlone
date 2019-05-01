@@ -45,15 +45,16 @@ echo "Adding cluster $FLYNN_CLUSTER_HOST..."
 APP_NAME="${APP_NAME}"
 DOMAIN="${DOMAIN}"
 
-ROUTE_ID=$("$FLYNN_CMD" -a "$APP_NAME" route | grep "$DOMAIN" | awk '{print $3}')
+echo "Extracting route id.."
+ROUTE_ID=$("$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "$APP_NAME" route | grep "$DOMAIN" | awk '{print $3}')
 
 if [[ -z "$ROUTE_ID" ]]; then
-    echo "Cannot determine route id"
+    echo "Cannot determine route id: $ROUTE_ID"
     exit 1
 fi
 
 echo "Setup acme-challange path route"
-"$FLYNN_CMD" -a "$APP_NAME" route add http "$DOMAIN/.well-known/acme-challenge/"
+"$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "$APP_NAME" route add http "$DOMAIN/.well-known/acme-challenge/"
 echo "done"
 
 echo "Generating certificate..."
@@ -66,7 +67,6 @@ echo "certbot certonly \
         --no-eff-email \
         --email $LETS_ENCRYPT_EMAIL \
         --preferred-challenges http \
-        -http-01-port 80 \
         -d $DOMAIN"
 
 certbot certonly \
@@ -77,11 +77,10 @@ certbot certonly \
   --no-eff-email \
   --email $LETS_ENCRYPT_EMAIL \
   --preferred-challenges http \
-  -http-01-port 80 \
   -d "$DOMAIN"
 
 echo "Updating certificates via Flynn routes... '$DOMAIN' for app '$APP_NAME'..."
-"$FLYNN_CMD" -a "$APP_NAME" route update "$ROUTE_ID" \
+"$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "$APP_NAME" route update "$ROUTE_ID" \
     --tls-cert "$CERTBOT_CONFIG_DIR/live/$DOMAIN/fullchain.pem" \
     --tls-key "$CERTBOT_CONFIG_DIR/live/$DOMAIN/privkey.pem"
 echo "done"
