@@ -12,7 +12,7 @@ read APP_NAME
 echo "Type Flynn Cluster host domain name (eg: server1.your-domain.com)"
 read FLYNN_CLUSTER_HOST
 
-flynn -c "$FLYNN_CLUSTER_HOST" create certbot
+flynn -c "$FLYNN_CLUSTER_HOST" create "certbot-$APP_NAME"
 
 FLYNN_CONTROLLER_KEY=$(flynn -c "$FLYNN_CLUSTER_HOST" -a controller env get AUTH_KEY)
 
