@@ -46,7 +46,7 @@ APP_NAME="${APP_NAME}"
 DOMAIN="${DOMAIN}"
 
 echo "Extracting route id.."
-ROUTE_ID=$("$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "certbot-$APP_NAME" route | grep "$DOMAIN" | awk '{print $3}')
+ROUTE_ID=$("$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "$APP_NAME" route | grep "$DOMAIN" | awk '{print $3}')
 
 if [[ -z "$ROUTE_ID" ]]; then
     echo "Cannot determine route id: $ROUTE_ID"
@@ -54,7 +54,7 @@ if [[ -z "$ROUTE_ID" ]]; then
 fi
 
 echo "Setup acme-challange path route"
-"$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "$APP_NAME" route add http "$DOMAIN/.well-known/acme-challenge/"
+"$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "certbot-$APP_NAME" route add http "$DOMAIN/.well-known/acme-challenge/"
 echo "done"
 
 echo "Generating certificate..."
