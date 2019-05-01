@@ -3,9 +3,6 @@ FLYNN_CMD="/app/flynn"
 CERTBOT_WORK_DIR="/app"
 CERTBOT_CONFIG_DIR="/app/config"
 
-python -m http.server 8080
-exit 1
-
 if [ -z "$APP_NAME" ]; then
     echo "$APP_NAME must be set"
     exit 1
@@ -88,5 +85,11 @@ do
         --config-dir "$CERTBOT_CONFIG_DIR" \
         --logs-dir "$CERTBOT_WORK_DIR/logs"
 
-    sleep 60
+    echo "Updating certificates via Flynn routes... '$DOMAIN' for app '$APP_NAME'..."
+    "$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "$APP_NAME" route update "$ROUTE_ID" \
+        --tls-cert "$CERTBOT_CONFIG_DIR/live/$DOMAIN/fullchain.pem" \
+        --tls-key "$CERTBOT_CONFIG_DIR/live/$DOMAIN/privkey.pem"
+    echo "done"
+    
+    sleep 7d
 done
