@@ -29,4 +29,4 @@ flynn env set LETS_ENCRYPT_EMAIL="$LETS_ENCRYPT_EMAIL" DOMAIN="$DOMAIN" APP_NAME
 echo "Deploying certbot.."
 git push flynn master
 
-flynn scale clock=1
+flynn scale web=1

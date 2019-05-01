@@ -68,8 +68,7 @@ certbot certonly \
   --email $LETS_ENCRYPT_EMAIL \
   --preferred-challenges http \
   --http-01-port  8080 \
-  -d "$DOMAIN" \
-  --dry-run
+  -d "$DOMAIN"
 
 echo "Updating certificates via Flynn routes... '$DOMAIN' for app '$APP_NAME'..."
 "$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "$APP_NAME" route update "$ROUTE_ID" \
@@ -90,6 +89,6 @@ do
         --tls-cert "$CERTBOT_CONFIG_DIR/live/$DOMAIN/fullchain.pem" \
         --tls-key "$CERTBOT_CONFIG_DIR/live/$DOMAIN/privkey.pem"
     echo "done"
-    
+
     sleep 7d
 done
