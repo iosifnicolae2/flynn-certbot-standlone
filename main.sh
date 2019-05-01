@@ -68,7 +68,7 @@ certbot certonly \
   --email $LETS_ENCRYPT_EMAIL \
   --preferred-challenges http \
   --http-01-port  8080 \
-  -d "$DOMAIN"
+  -d "$DOMAIN" \
   --dry-run
 
 echo "Updating certificates via Flynn routes... '$DOMAIN' for app '$APP_NAME'..."
