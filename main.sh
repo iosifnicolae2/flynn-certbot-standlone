@@ -69,6 +69,7 @@ certbot certonly \
   --preferred-challenges http \
   --http-01-port  8080 \
   -d "$DOMAIN"
+  --dry-run
 
 echo "Updating certificates via Flynn routes... '$DOMAIN' for app '$APP_NAME'..."
 "$FLYNN_CMD" -c "$FLYNN_CLUSTER_HOST" -a "$APP_NAME" route update "$ROUTE_ID" \
