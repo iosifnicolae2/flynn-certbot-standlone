@@ -3,6 +3,9 @@ FLYNN_CMD="/app/flynn"
 CERTBOT_WORK_DIR="/app"
 CERTBOT_CONFIG_DIR="/app/config"
 
+python -m http.server 8080
+exit 1
+
 if [ -z "$APP_NAME" ]; then
     echo "$APP_NAME must be set"
     exit 1
