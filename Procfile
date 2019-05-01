@@ -1,1 +1,1 @@
-clock: ./main.sh
+web: ./main.sh
